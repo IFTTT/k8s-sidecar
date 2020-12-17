@@ -4,6 +4,7 @@ import base64
 import os
 import sys
 import signal
+import gzip
 
 from multiprocessing import Process
 from time import sleep
@@ -43,6 +44,9 @@ def _get_file_data_and_name(full_filename, content, resource, content_type="asci
     if full_filename.endswith(".url"):
         filename = full_filename[:-4]
         file_data = request(file_data, "GET").text
+    elif full_filename.endswith(".gz"):
+        filename = full_filename[:-3]
+        file_data = gzip.decompress(file_data)
     else:
         filename = full_filename
 
